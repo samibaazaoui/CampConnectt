@@ -1,0 +1,79 @@
+<div class="container">
+
+  <h2>My Customers</h2>
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="loading">
+    Loading customers...
+  </div>
+
+  <!-- TABLE -->
+  <div *ngIf="!loading && customers.length > 0" class="table-container">
+
+    <table class="table">
+
+      <thead>
+        <tr>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Created At</th>
+          <th>Call</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let user of customers; trackBy: trackById">
+
+          <td><strong>{{ user.fullName }}</strong></td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.createdAt | date:'medium' }}</td>
+
+          <td>
+
+            <!-- idle -->
+            <button
+              *ngIf="getCallState(user.id) === 'idle'"
+              class="call-btn"
+              (click)="callUser(user)">
+              📞
+            </button>
+
+            <!-- calling -->
+            <button
+              *ngIf="getCallState(user.id) === 'calling'"
+              class="call-btn calling"
+              disabled>
+              ⏳
+            </button>
+
+            <!-- accepted -->
+            <button
+              *ngIf="getCallState(user.id) === 'accepted'"
+              class="call-btn accepted"
+              disabled>
+              🟢
+            </button>
+
+            <!-- rejected -->
+            <button
+              *ngIf="getCallState(user.id) === 'rejected'"
+              class="call-btn rejected"
+              disabled>
+              ❌
+            </button>
+
+          </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <!-- EMPTY -->
+  <div *ngIf="!loading && customers.length === 0" class="empty">
+    No customers yet
+  </div>
+
+</div>

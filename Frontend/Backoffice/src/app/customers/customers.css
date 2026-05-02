@@ -1,0 +1,108 @@
+.container {
+  padding: 28px;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(180deg, #f7f8fc 0%, #eef1f7 100%);
+  min-height: 100vh;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #111827;
+}
+
+/* Card style table */
+.table-container {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  overflow: hidden;
+  border: 1px solid #eef0f5;
+}
+
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Header */
+.table thead {
+  background: linear-gradient(90deg, #6366f1, #4f46e5);
+}
+
+.table th {
+  color: white;
+  padding: 16px;
+  text-align: left;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Rows */
+.table td {
+  padding: 16px;
+  font-size: 14px;
+  color: #374151;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.table tbody tr {
+  transition: all 0.25s ease;
+}
+
+.table tbody tr:hover {
+  background: #f8fafc;
+  transform: translateY(-2px);
+}
+
+/* Buttons */
+.call-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: none;
+  background: #10b981;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.call-btn:hover:not(:disabled) {
+  background: #059669;
+  transform: scale(1.08);
+  box-shadow: 0 8px 18px rgba(16,185,129,0.35);
+}
+
+/* States */
+.call-btn.calling {
+  background: #6366f1;
+  animation: pulse 1.2s infinite;
+}
+
+.call-btn.accepted {
+  background: #22c55e;
+}
+
+.call-btn.rejected {
+  background: #ef4444;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(99,102,241,0.6); }
+  70% { box-shadow: 0 0 0 12px rgba(99,102,241,0); }
+  100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); }
+}
+
+/* Loading / Empty */
+.loading, .empty {
+  text-align: center;
+  padding: 30px;
+  color: #6b7280;
+  font-size: 14px;
+}

@@ -1,0 +1,84 @@
+<div>
+  <div class="header-group">
+    <div>
+      <h1 style="color: white; font-weight: 800; font-size: 1.8rem; margin: 0 0 0.25rem 0;">Activity Catalog</h1>
+      <p style="color: var(--text-dim); margin: 0;">Organize experiences and excursions linked to events.</p>
+    </div>
+    <button class="btn-new" (click)="openModal()">
+      <i class="fa-solid fa-plus"></i>
+      New Activity
+    </button>
+  </div>
+
+  <div *ngIf="loading()" style="padding: 3rem; text-align: center;">
+    <i class="fa-solid fa-circle-notch fa-spin fa-2x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+    <p style="color: var(--text-muted); font-weight: 500;">Loading catalog...</p>
+  </div>
+
+  <!-- Activities Modal -->
+  <div class="modal-overlay" *ngIf="showModal()" (click)="closeModal()">
+    <div class="modal-container animate-slide-up" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="modal-title">{{ editingId() ? 'Update Activity details' : 'Register New Activity' }}</h2>
+        <button (click)="closeModal()" style="color: var(--text-dim); transition: 0.2s;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <form [formGroup]="activityForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Activity Name</label>
+            <input type="text" formControlName="name" class="form-input" placeholder="e.g. Kayaking the Rapids">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Associated Event</label>
+            <select formControlName="eventId" class="form-input">
+              <option [ngValue]="null">Select an Event</option>
+              <option *ngFor="let ev of eventsSet()" [ngValue]="ev.id">
+                {{ ev.title }} ({{ ev.location }})
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description / Guidelines</label>
+            <textarea formControlName="description" class="form-textarea" placeholder="Detail the activity requirements and goals..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="btn-submit" [disabled]="activityForm.invalid">
+            <span>{{ editingId() ? 'Save Changes' : 'Register Activity' }}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Board -->
+  <div class="activities-grid" *ngIf="!loading()">
+    <div *ngFor="let act of activities()" class="activity-card animate-slide-up">
+      <div class="activity-visual">
+        <i class="fa-solid fa-person-hiking visual-icon"></i>
+      </div>
+      
+      <div class="activity-body">
+        <h3 class="activity-name">{{ act.name }}</h3>
+        <p style="font-size: 0.8rem; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase;">
+          <i class="fa-solid fa-calendar-day"></i> {{ act.eventTitle || 'Linked Excursion' }}
+        </p>
+        <p class="activity-description">{{ act.description }}</p>
+        
+        <div class="activity-meta">
+          <div class="activity-price">Active</div>
+          <div class="activity-actions">
+            <!-- Edit Button mapped to openEditModal -->
+            <button class="action-btn" (click)="openEditModal(act)"><i class="fa-solid fa-pen"></i></button>
+            <button class="action-btn btn-rem" (click)="deleteActivity(act.id)"><i class="fa-solid fa-trash-can"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
