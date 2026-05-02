@@ -1,0 +1,52 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/camp_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+
+server:
+  port: 8080
+
+jwt:
+  secret: Y2FtcC1iYWNrZW5kLXNlY3JldC1rZXktZm9yLWp3dC10b2tlbi1nZW5lcmF0aW9uLTIwMjQ=
+  expiration: 86400000
+
+cors:
+  allowed-origins: http://localhost:4200,http://localhost:3000
+
+# ML Spam Detection Configuration
+spam-detection:
+  enabled: true
+  url: http://localhost:8001/predict
+  confidence-threshold: 0.8
+
+# src/main/resources/application.yml
+
+# ... (garde TOUTES tes configurations existantes ci-dessus) ...
+
+# ==================== CHAT COOLDOWN (à ajouter à la fin) ====================
+chat:
+  cooldown:
+    seconds: 30
+
+# src/main/resources/application.yml
+
+# ... (garde TOUTES tes configurations existantes) ...
+
+# ==================== LOGGING CONFIGURATION ====================
+llogging:
+  level:
+    root: INFO
+    com.camp.backend: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

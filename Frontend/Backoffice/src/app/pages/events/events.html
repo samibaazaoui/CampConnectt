@@ -1,0 +1,138 @@
+<div>
+  <div class="header-panel">
+    <div>
+      <h1 style="color: white; font-weight: 800; font-size: 1.8rem; margin: 0 0 0.25rem 0;">Event Management</h1>
+      <p style="color: var(--text-dim); margin: 0;">Organize and schedule community gatherings.</p>
+    </div>
+    <button class="btn-new" (click)="openModal()">
+      <i class="fa-solid fa-plus"></i>
+      New Event
+    </button>
+  </div>
+
+  <div *ngIf="loading()" style="padding: 3rem; text-align: center;">
+    <i class="fa-solid fa-circle-notch fa-spin fa-2x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+    <p style="color: var(--text-muted); font-weight: 500;">Loading schedule...</p>
+  </div>
+
+  <!-- Events Modal -->
+  <div class="modal-overlay" *ngIf="showModal()" (click)="closeModal()">
+    <div class="modal-container animate-slide-up" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="modal-title">{{ editingId() ? 'Update Event Schedule' : 'Launch New Event' }}</h2>
+        <button (click)="closeModal()" style="color: var(--text-dim); transition: 0.2s;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Event Title</label>
+            <input type="text" formControlName="title" class="form-input" placeholder="e.g. Annual Wilderness Retreat">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Location Setting</label>
+            <input type="text" formControlName="location" class="form-input" placeholder="e.g. Yellowstone Basecamp">
+          </div>
+          
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Start Time</label>
+              <input type="datetime-local" formControlName="startAt" class="form-input">
+            </div>
+            <div class="form-group">
+              <label class="form-label">End Time</label>
+              <input type="datetime-local" formControlName="endAt" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description / Itinerary</label>
+            <textarea formControlName="description" class="form-textarea" placeholder="Detail the activities and goals..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="btn-submit" [disabled]="eventForm.invalid">
+            <span>{{ editingId() ? 'Save Changes' : 'Schedule Event' }}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Attendees Modal -->
+  <div class="modal-overlay" *ngIf="showParticipants()" (click)="closeParticipants()" style="z-index: 1050;">
+    <div class="modal-container animate-slide-up" style="max-width: 480px;" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title">Event Roster</h2>
+          <p style="color: var(--text-dim); margin-top: 0.25rem; font-size: 0.8125rem;">{{ activeEventTitle() }}</p>
+        </div>
+        <button (click)="closeParticipants()" style="color: var(--text-dim);"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="modal-body" style="padding: 1.5rem;">
+        <div *ngIf="participants().length === 0" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+          <i class="fa-solid fa-ghost fa-2x mb-3" style="opacity: 0.5;"></i>
+          <p>No participants registered yet.</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;" *ngIf="participants().length > 0">
+          <div *ngFor="let p of participants()" style="padding: 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem;">
+                {{ p.userFullName ? p.userFullName.slice(0, 2).toUpperCase() : '?' }}
+              </div>
+              <span style="color: white; font-weight: 600;">{{ p.userFullName }}</span>
+            </div>
+            <span style="font-size: 0.7rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: var(--radius-full); text-transform: uppercase;"
+                  [ngStyle]="{
+                    'background': p.status === 'CONFIRMED' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(245, 158, 11, 0.1)',
+                    'color': p.status === 'CONFIRMED' ? '#4ade80' : '#fbbf24'
+                  }">
+              {{ p.status || 'PENDING' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Board -->
+  <div class="events-board" *ngIf="!loading()">
+    <div *ngFor="let ev of events()" class="event-card animate-slide-up">
+      <div class="event-visual">
+        <i class="fa-solid fa-calendar-check"></i>
+      </div>
+      
+      <div class="event-meta-top">
+        <div class="date-pill">
+          <i class="fa-regular fa-calendar" style="color: var(--primary);"></i>
+          <span>{{ formatDate(ev.startAt) }}</span>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="event-title">{{ ev.title }}</h3>
+        <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0.5rem 0;" class="clamp-2">{{ ev.description }}</p>
+        <div class="event-location">
+          <i class="fa-solid fa-location-crosshairs"></i>
+          <span>{{ ev.location }}</span>
+        </div>
+      </div>
+
+      <div class="event-footer">
+        <button class="attendees" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; color: var(--primary); padding: 0;" (click)="viewAttendees(ev)">
+          <i class="fa-solid fa-users"></i>
+          View Roster
+        </button>
+        <div class="event-actions">
+          <button class="btn-action" (click)="openEditModal(ev)"><i class="fa-solid fa-pen"></i></button>
+          <button (click)="deleteEvent(ev.id)" class="btn-action btn-delete"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

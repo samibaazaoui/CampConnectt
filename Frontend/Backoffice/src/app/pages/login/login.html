@@ -1,0 +1,99 @@
+<div class="login-container animate-fade-in">
+  <div class="login-card">
+    <div class="login-header">
+      <i class="fa-solid fa-mountain-sun"></i>
+      <h1>{{ isRegisterMode ? 'Join the Wilderness' : 'CAMP Authentication' }}</h1>
+      <p class="text-secondary" style="font-size: 0.875rem;">
+        {{ isRegisterMode ? 'Create your explorer profile today' : 'Sign in to access your dashboard' }}
+      </p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="error-msg" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <div class="form-group animate-slide-up" *ngIf="isRegisterMode">
+        <label for="fullName">Full Name</label>
+        <input 
+          type="text" 
+          id="fullName" 
+          name="fullName" 
+          [(ngModel)]="credentials.fullName" 
+          placeholder="e.g. John Doe"
+          [required]="isRegisterMode">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          [(ngModel)]="credentials.email" 
+          placeholder="hello@camp.com"
+          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+          #emailInput="ngModel"
+          required>
+        <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" style="font-size: 0.75rem; color: #f87171; margin-top: 0.25rem;">
+          Please enter a valid email address.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          [(ngModel)]="credentials.password" 
+          placeholder="••••••••"
+          minlength="6"
+          required>
+      </div>
+
+      <div class="form-group animate-slide-up" *ngIf="isRegisterMode">
+        <label for="confirmPassword">Confirm Password</label>
+        <input 
+          type="password" 
+          id="confirmPassword" 
+          name="confirmPassword" 
+          [(ngModel)]="credentials.confirmPassword" 
+          placeholder="••••••••"
+          [required]="isRegisterMode">
+      </div>
+
+      <div class="form-group animate-slide-up" *ngIf="isRegisterMode">
+        <label for="role">Account Type</label>
+        <select 
+          id="role" 
+          name="role" 
+          [(ngModel)]="credentials.role" 
+          class="form-control"
+          style="width: 100%; padding: 0.75rem 1rem; border-radius: 0.75rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white; transition: all 0.2s;"
+          [required]="isRegisterMode">
+          <option value="USER">Camper Explorer</option>
+          <option value="CAMPSITE_OWNER">Campsite Owner</option>
+          <option value="EQUIPMENT_OWNER">Equipment Owner</option>
+        </select>
+        <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 0.5rem; line-height: 1.4;">
+          * Owners must be approved by administration before listing assets.
+        </p>
+      </div>
+
+      <button type="submit" class="btn-login" [disabled]="loading">
+        <span *ngIf="!loading">{{ isRegisterMode ? 'Create Account' : 'Login' }}</span>
+        <span *ngIf="loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Processing...</span>
+      </button>
+
+      <div class="toggle-mode">
+        <p *ngIf="!isRegisterMode">
+          Don't have an account? <a href="javascript:void(0)" (click)="toggleMode()">Sign up here</a>
+        </p>
+        <p *ngIf="isRegisterMode">
+          Already have a profile? <a href="javascript:void(0)" (click)="toggleMode()">Back to login</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+2026-05-01 20:58:43,514 - __main__ - INFO - 🚀 Starting ML Service with CORS enabled...
+2026-05-01 20:58:43,515 - __main__ - INFO - 📚 Bad words dictionary: 73 terms (FR+EN)
+2026-05-01 20:58:43,611 - __main__ - INFO - 🚀 ML Service starting up...
+2026-05-01 20:58:46,259 - __main__ - INFO - ✅ ML Model loaded: spam_model.joblib
+2026-05-01 20:59:41,889 - __main__ - INFO - 🔍 [Req:7d5b395d] Analyzing content (9 chars)
+2026-05-01 20:59:41,898 - __main__ - WARNING - 🚫 [Req:7d5b395d] Bad words detected: ['fuck']
+2026-05-01 21:00:03,667 - __main__ - INFO - 🔍 [Req:b644ebfc] Analyzing content (10 chars)
+2026-05-01 21:02:19,490 - __main__ - INFO - 🔍 [Req:7d5b395d] Analyzing content (9 chars)
+2026-05-01 21:02:19,497 - __main__ - WARNING - 🚫 [Req:7d5b395d] Bad words detected: ['fuck']
+2026-05-01 21:15:46,293 - __main__ - INFO - 🔍 [Req:7d5b395d] Analyzing content (9 chars)
+2026-05-01 21:15:46,306 - __main__ - WARNING - 🚫 [Req:7d5b395d] Bad words detected: ['fuck']
+2026-05-01 21:15:49,948 - __main__ - INFO - 🔍 [Req:7d5b395d] Analyzing content (9 chars)
+2026-05-01 21:15:49,948 - __main__ - WARNING - 🚫 [Req:7d5b395d] Bad words detected: ['fuck']
+2026-05-01 21:16:12,829 - __main__ - INFO - 🔍 [Req:b644ebfc] Analyzing content (10 chars)
+2026-05-01 21:21:38,746 - __main__ - INFO - 🛑 ML Service shutting down...
+2026-05-01 21:21:46,051 - __main__ - INFO - Starting ML Service with CORS enabled...
+2026-05-01 21:21:46,052 - __main__ - INFO - Bad words dictionary: 73 terms (FR+EN)
+2026-05-01 21:21:46,115 - __main__ - INFO - ML Service starting up...
+2026-05-01 21:21:47,850 - __main__ - INFO - ML Model loaded: spam_model.joblib
+2026-05-01 21:23:02,126 - __main__ - INFO - [REQ:b644ebfc] Analyzing content (10 chars)
+2026-05-01 22:22:25,645 - __main__ - INFO - [REQ:b71ccab3] Analyzing content (11 chars)
+2026-05-01 22:23:14,166 - __main__ - INFO - [REQ:43f985e4] Analyzing content (14 chars)
+2026-05-01 22:23:19,434 - __main__ - INFO - [REQ:81cb68cf] Analyzing content (27 chars)
+2026-05-01 22:23:20,718 - __main__ - INFO - [REQ:259b39a6] Analyzing content (49 chars)
+2026-05-01 22:39:45,630 - __main__ - INFO - [REQ:b71ccab3] Analyzing content (11 chars)
+2026-05-02 15:55:08,634 - __main__ - INFO - Starting ML Service with CORS enabled...
+2026-05-02 15:55:08,635 - __main__ - INFO - Bad words dictionary: 73 terms (FR+EN)
+2026-05-02 15:55:08,788 - __main__ - INFO - ML Service starting up...
+2026-05-02 15:55:14,218 - __main__ - INFO - ML Model loaded: spam_model.joblib
+2026-05-02 15:55:48,566 - __main__ - INFO - [REQ:b644ebfc] Analyzing content (10 chars)
+2026-05-02 15:55:52,630 - __main__ - INFO - [REQ:b644ebfc] Analyzing content (10 chars)
+2026-05-02 15:55:54,834 - __main__ - INFO - [REQ:b644ebfc] Analyzing content (10 chars)
+2026-05-02 15:55:57,054 - __main__ - INFO - [REQ:4e0c6ba4] Analyzing content (15 chars)
+2026-05-02 15:55:57,058 - __main__ - WARNING - [REQ:4e0c6ba4] Likely spam (conf: 72.09%)
+2026-05-02 15:57:40,403 - __main__ - INFO - [REQ:4e0c6ba4] Analyzing content (15 chars)
+2026-05-02 15:57:40,408 - __main__ - WARNING - [REQ:4e0c6ba4] Likely spam (conf: 72.09%)
+2026-05-02 15:57:49,233 - __main__ - INFO - [REQ:7d5b395d] Analyzing content (9 chars)
+2026-05-02 15:57:49,237 - __main__ - WARNING - [REQ:7d5b395d] Bad words detected: ['fuck']
+2026-05-02 15:58:49,147 - __main__ - INFO - [REQ:b644ebfc] Analyzing content (10 chars)
+2026-05-02 16:30:02,162 - __main__ - INFO - [REQ:b45cffe0] Analyzing content (6 chars)
+2026-05-02 20:01:52,876 - __main__ - INFO - [REQ:38df36a4] Analyzing content (7 chars)
+2026-05-02 20:02:37,878 - __main__ - INFO - [REQ:7d5b395d] Analyzing content (9 chars)
+2026-05-02 20:02:37,881 - __main__ - WARNING - [REQ:7d5b395d] Bad words detected: ['fuck']
+2026-05-02 20:03:04,092 - __main__ - INFO - [REQ:85ab7989] Analyzing content (11 chars)
+2026-05-02 20:03:04,093 - __main__ - WARNING - [REQ:85ab7989] Bad words detected: ['merde']
+2026-05-02 20:03:29,384 - __main__ - INFO - [REQ:b644ebfc] Analyzing content (10 chars)
+2026-05-02 20:28:47,647 - __main__ - INFO - [REQ:7dbcbbe9] Analyzing content (11 chars)
+2026-05-02 20:39:21,620 - __main__ - INFO - Starting ML Service with CORS enabled...
+2026-05-02 20:39:21,627 - __main__ - INFO - Bad words dictionary: 73 terms (FR+EN)
+2026-05-02 20:39:21,770 - __main__ - INFO - ML Service starting up...
+2026-05-02 20:39:27,748 - __main__ - INFO - ML Model loaded: spam_model.joblib
+2026-05-02 20:43:14,739 - __main__ - INFO - [REQ:3efb8f8d] Analyzing content (9 chars)
+2026-05-02 20:43:15,130 - __main__ - INFO - [REQ:93c3aa02] Analyzing content (10 chars)
+2026-05-02 20:43:16,717 - __main__ - INFO - [REQ:3efb8f8d] Analyzing content (9 chars)
+2026-05-02 20:43:17,406 - __main__ - INFO - [REQ:3efb8f8d] Analyzing content (9 chars)
+2026-05-02 20:43:18,475 - __main__ - INFO - [REQ:3efb8f8d] Analyzing content (9 chars)
+2026-05-02 20:43:19,841 - __main__ - INFO - [REQ:3efb8f8d] Analyzing content (9 chars)
+2026-05-02 21:00:03,567 - __main__ - INFO - [REQ:224aad7c] Analyzing content (13 chars)
+2026-05-02 21:00:05,904 - __main__ - INFO - [REQ:8004d2ea] Analyzing content (27 chars)
+2026-05-02 21:00:41,264 - __main__ - INFO - [REQ:11780a96] Analyzing content (22 chars)
+2026-05-02 21:00:47,929 - __main__ - INFO - [REQ:6cf4ee9c] Analyzing content (16 chars)
+2026-05-02 21:00:50,772 - __main__ - INFO - [REQ:028ef680] Analyzing content (15 chars)
+2026-05-02 21:00:59,186 - __main__ - INFO - [REQ:e63e6d9b] Analyzing content (10 chars)
+2026-05-02 21:01:02,085 - __main__ - INFO - [REQ:6214faa7] Analyzing content (21 chars)
+2026-05-02 21:02:34,719 - __main__ - INFO - [REQ:85ab7989] Analyzing content (11 chars)
+2026-05-02 21:02:34,721 - __main__ - WARNING - [REQ:85ab7989] Bad words detected: ['merde']
+2026-05-02 21:02:45,347 - __main__ - INFO - [REQ:ddb94c90] Analyzing content (17 chars)
