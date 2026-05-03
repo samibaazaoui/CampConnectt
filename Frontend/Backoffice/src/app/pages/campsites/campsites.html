@@ -1,0 +1,133 @@
+<div class="header-actions animate-fade-in">
+  <div>
+    <h1 style="font-size: 2.25rem; margin-bottom: 0.5rem; color: white;">
+      {{ isOwner() ? 'My Campsite Portfolio' : (isAdmin() ? 'Global Campsite Inventory' : 'Campsite Inventory') }}
+    </h1>
+    <p style="color: var(--text-muted); font-size: 1rem;">
+      {{ isOwner() ? 'Managing your premium territorial assets.' : 'Architecting the territory\'s premium camping experiences.' }}
+    </p>
+  </div>
+  <button class="btn-primary" (click)="openModal()">
+    <i class="fa-solid fa-paper-plane"></i>
+    <span>Submit Registration Demand</span>
+  </button>
+</div>
+
+<!-- Registration Modal -->
+<div class="modal-overlay" *ngIf="showModal()" (click)="closeModal()">
+  <div class="modal-container animate-slide-up" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">{{ editingId() ? 'Update Territory Node' : 'Campsite Registration Demand' }}</h2>
+      <button (click)="closeModal()" style="color: var(--text-dim); transition: 0.2s;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    
+    <form [formGroup]="campsiteForm" (ngSubmit)="onSubmit()">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Site Name</label>
+          <input type="text" formControlName="name" class="form-input" placeholder="e.g. Whispering Pines">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Geographic Location</label>
+          <input type="text" formControlName="location" class="form-input" placeholder="e.g. Ifrane, Morocco">
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Guest Capacity</label>
+            <input type="number" formControlName="capacity" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Price / Night ($)</label>
+            <input type="number" formControlName="nightlyPrice" class="form-input">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Site Imagery</label>
+          <input type="file" #fileInput hidden accept="image/*" (change)="onFileSelected($event)">
+          <button type="button" class="btn-secondary" style="width: 100%; border: 1px dashed var(--glass-border); padding: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem;" (click)="fileInput.click()">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size: 1.25rem; color: var(--primary);"></i>
+            <span>{{ uploadingImage() ? 'Uploading...' : (campsiteForm.get('imageUrl')?.value ? 'Image Uploaded Successfully' : 'Upload Image to Vault') }}</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" (click)="closeModal()">Cancel</button>
+        <button type="submit" class="btn-submit" [disabled]="campsiteForm.invalid">
+          <span>{{ editingId() ? 'Save Changes' : 'Initialize Node' }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="campsite-grid">
+  <div *ngIf="loading()" style="grid-column: 1 / -1; text-align: center; padding: 6rem;">
+    <i class="fa-solid fa-compass fa-spin" style="font-size: 3rem; color: var(--primary); margin-bottom: 1.5rem; display: block;"></i>
+    <p style="color: var(--text-muted); font-weight: 500;">Mapping territorial sites...</p>
+  </div>
+
+  <div *ngFor="let c of campsites()" class="campsite-card animate-slide-up">
+    <div class="card-visual">
+      <img *ngIf="c.imageUrl" [src]="c.imageUrl" alt="Campsite">
+      <i class="fa-solid fa-tent" *ngIf="!c.imageUrl"></i>
+      <div class="card-badge" [class]="c.approvalStatus?.toLowerCase()">
+        {{ c.approvalStatus }}
+      </div>
+    </div>
+    
+    <div class="card-body">
+      <h3 class="card-title">{{ c.name }}</h3>
+      <div class="card-location">
+        <i class="fa-solid fa-location-dot"></i>
+        <span>{{ c.location }}</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: -1rem; margin-bottom: 1rem; color: var(--text-dim); font-size: 0.75rem;">
+        <i class="fa-solid fa-user-tie" [style.color]="isAdmin() ? 'var(--primary)' : 'var(--text-dim)'"></i>
+        <span style="font-weight: 600;">{{ c.ownerName || 'Standard Legacy Site' }}</span>
+        <span *ngIf="isOwner()" style="padding: 0.2rem 0.5rem; background: rgba(99,102,241,0.1); color: var(--primary); border-radius: var(--radius-sm); font-size: 0.65rem; font-weight: 800;">YOURS</span>
+      </div>
+      
+      <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+        <div style="flex: 1; padding: 0.75rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); text-align: center;">
+          <div style="font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 0.25rem;">Capacity</div>
+          <div style="font-size: 1rem; font-weight: 700; color: white;">{{ c.capacity }} Guests</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div class="price-value">${{ c.nightlyPrice }}<span class="price-label">/nt</span></div>
+        <div class="card-actions">
+          <!-- Admin Actions -->
+          <ng-container *ngIf="isAdmin() && c.approvalStatus === 'PENDING'">
+            <button class="btn-icon btn-approve" (click)="approve(c.id)" title="Approve">
+              <i class="fa-solid fa-check"></i>
+            </button>
+            <button class="btn-icon btn-cancel" (click)="cancel(c.id)" title="Cancel">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </ng-container>
+
+          <!-- Owner Actions -->
+          <ng-container *ngIf="isAdmin() || (isOwner() && c.approvalStatus === 'PENDING')">
+            <button class="btn-icon" (click)="openEditModal(c)" title="Edit">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button class="btn-icon btn-delete" (click)="deleteCampsite(c.id)" title="Delete">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="campsites().length === 0 && !loading()" style="grid-column: 1 / -1; text-align: center; padding: 6rem; opacity: 0.5;">
+    <i class="fa-solid fa-map-location-dot" style="font-size: 4rem; margin-bottom: 1.5rem; display: block;"></i>
+    <p style="font-size: 1.125rem;">No campsites registered in this sector.</p>
+  </div>
+</div>

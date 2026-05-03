@@ -1,0 +1,82 @@
+spring:
+
+  datasource:
+
+    url: jdbc:mysql://localhost:3306/camp_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+
+    username: root
+
+    password:
+
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+    hibernate:
+
+      ddl-auto: update
+
+    show-sql: true
+
+    properties:
+
+      hibernate:
+
+        format_sql: true
+
+  mail:
+
+    host: smtp.gmail.com
+
+    port: 587
+
+    username: ${MAIL_USERNAME:hazemamor05@gmail.com}
+
+    password: ${MAIL_PASSWORD:wbjl qsrg lkum uapp}
+
+    properties:
+
+      mail:
+
+        smtp:
+
+          auth: true
+
+          starttls:
+
+            enable: true
+
+          ssl:
+
+            trust: smtp.gmail.com
+
+
+
+server:
+
+  port: 8081
+
+
+
+jwt:
+
+  secret: Y2FtcC1iYWNrZW5kLXNlY3JldC1rZXktZm9yLWp3dC10b2tlbi1nZW5lcmF0aW9uLTIwMjQ=
+
+  expiration: 86400000
+
+
+
+app:
+
+  base-url: http://192.168.0.119:8081
+
+  ml-service-url: http://localhost:8000
+
+
+
+cors:
+
+  allowed-origins: http://localhost:4200,http://localhost:3000,http://192.168.0.119:4200,http://192.168.0.119:8081,https://defiant-tropics-imperial.ngrok-free.dev
+

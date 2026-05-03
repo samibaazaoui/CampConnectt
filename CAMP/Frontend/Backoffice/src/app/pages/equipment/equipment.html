@@ -1,0 +1,123 @@
+<div class="header-box animate-fade-in">
+  <div>
+    <h1 style="font-size: 2.25rem; color: white; margin-bottom: 0.5rem;">
+      {{ isOwner() ? 'My Expedition Gear' : (isAdmin() ? 'Global Gear Catalog' : 'Expedition Equipment') }}
+    </h1>
+    <p style="color: var(--text-muted);">
+      {{ isOwner() ? 'Managing your premium inventory for upcoming adventures.' : 'The platform\'s comprehensive inventory of outdoor assets.' }}
+    </p>
+  </div>
+  <button class="btn-new" (click)="openModal()">
+    <i class="fa-solid fa-paper-plane"></i>
+    <span>Submit Listing Demand</span>
+  </button>
+</div>
+
+<!-- Add Equipment Modal -->
+<div class="modal-overlay" *ngIf="showModal()" (click)="closeModal()">
+  <div class="modal-container animate-slide-up" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">{{ editingId() ? 'Update Equipment' : 'Equipment Listing Demand' }}</h2>
+      <button (click)="closeModal()" style="color: var(--text-dim); transition: 0.2s;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    
+    <form [formGroup]="equipmentForm" (ngSubmit)="onSubmit()">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Asset Name</label>
+          <input type="text" formControlName="name" class="form-input" placeholder="e.g. Premium Four-Person Tent">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea formControlName="description" class="form-textarea" placeholder="Detailed technical specifications..."></textarea>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Units in Stock</label>
+            <input type="number" formControlName="quantityInStock" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Unit Price ($)</label>
+            <input type="number" formControlName="unitPrice" class="form-input">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Gear Imagery</label>
+          <input type="file" #equipFileInput hidden accept="image/*" (change)="onFileSelected($event)">
+          <button type="button" class="btn-secondary" style="width: 100%; border: 1px dashed var(--glass-border); padding: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem;" (click)="equipFileInput.click()">
+            <i class="fa-solid fa-cloud-arrow-up" style="font-size: 1.25rem; color: var(--primary);"></i>
+            <span>{{ uploadingImage() ? 'Uploading...' : (equipmentForm.get('imageUrl')?.value ? 'Image Uploaded Successfully' : 'Upload Image to Vault') }}</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" (click)="closeModal()">Cancel</button>
+        <button type="submit" class="btn-submit" [disabled]="equipmentForm.invalid">
+          <span>{{ editingId() ? 'Save Changes' : 'Add to Catalog' }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="inventory-grid">
+  <div *ngIf="loading()" style="grid-column: 1 / -1; text-align: center; padding: 6rem;">
+    <i class="fa-solid fa-gear fa-spin" style="font-size: 3rem; color: var(--primary); margin-bottom: 1.5rem; display: block;"></i>
+    <p style="color: var(--text-muted);">Cataloging inventory assets...</p>
+  </div>
+  
+  <div class="equipment-card animate-slide-up" *ngFor="let item of equipment()">
+    <div class="card-icon-container">
+      <img *ngIf="item.imageUrl" [src]="item.imageUrl" [alt]="item.name">
+      <i *ngIf="!item.imageUrl" class="fa-solid" [ngClass]="item.name.toLowerCase().includes('tent') ? 'fa-tent' : 'fa-lightbulb'"></i>
+    </div>
+
+      <div class="stock-status">
+        <span class="badge-stock" [class.status-low]="item.quantityInStock < 5">
+          {{ item.quantityInStock }} in unit
+        </span>
+        <span class="status-badge" [class]="item.approvalStatus?.toLowerCase()">
+          {{ item.approvalStatus }}
+        </span>
+      </div>
+
+    <div>
+      <h3 class="item-name">{{ item.name }}</h3>
+      <p class="item-desc">{{ item.description || 'Standard expedition grade equipment.' }}</p>
+    </div>
+
+    <div class="card-footer">
+      <div class="unit-price">${{ item.unitPrice }}</div>
+        <div class="actions">
+          <!-- Admin Actions -->
+          <ng-container *ngIf="isAdmin() && item.approvalStatus === 'PENDING'">
+            <button class="btn-action btn-approve" (click)="approve(item.id)" title="Approve">
+              <i class="fa-solid fa-check"></i>
+            </button>
+            <button class="btn-action btn-cancel" (click)="cancel(item.id)" title="Cancel">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </ng-container>
+
+          <!-- Owner Actions -->
+          <ng-container *ngIf="isAdmin() || (isOwner() && item.approvalStatus === 'PENDING')">
+            <button class="btn-action" (click)="openEditModal(item)" title="Edit">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button class="btn-action btn-delete" (click)="deleteEquipment(item.id)" title="Delete">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </ng-container>
+        </div>
+    </div>
+  </div>
+  
+  <div *ngIf="equipment().length === 0 && !loading()" style="grid-column: 1 / -1; text-align: center; padding: 6rem; opacity: 0.5;">
+    <i class="fa-solid fa-box-open" style="font-size: 4rem; margin-bottom: 1.5rem; display: block;"></i>
+    <p style="font-size: 1.125rem;">The equipment vault is currently empty.</p>
+  </div>
+</div>

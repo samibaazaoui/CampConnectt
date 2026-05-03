@@ -1,0 +1,69 @@
+<aside class="sidebar">
+  <div class="brand">
+    <i class="fa-solid fa-mountain-sun"></i>
+    <span class="brand-text">CAMP Admin</span>
+  </div>
+
+  <nav class="nav-links">
+    <!-- Admin Only -->
+    @if (isAdmin()) {
+      <a routerLink="/admin/dashboard" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Dashboard</span>
+      </a>
+      <a routerLink="/admin/campsites" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-tent"></i>
+        <span>Manage Campsites</span>
+      </a>
+      <a routerLink="/admin/equipment" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-campground"></i>
+        <span>Manage Equipment</span>
+      </a>
+      <a routerLink="/admin/reservations" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-calendar-check"></i>
+        <span>Reservations</span>
+      </a>
+      <a routerLink="/admin/orders" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-box"></i>
+        <span>Orders</span>
+      </a>
+      <a routerLink="/admin/events" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span>Events</span>
+      </a>
+      <a routerLink="/admin/activities" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-person-hiking"></i>
+        <span>Activities</span>
+      </a>
+      <a routerLink="/admin/users" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-users"></i>
+        <span>Users</span>
+      </a>
+      <a routerLink="/admin/analytics" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-chart-mixed"></i>
+        <span>Event Analytics</span>
+      </a>
+    }
+
+    <!-- Campsite Owner -->
+    @if (isCampsiteOwner()) {
+      <a routerLink="/admin/campsites" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-tent"></i>
+        <span>My Campsites</span>
+      </a>
+    }
+
+    <!-- Equipment Owner -->
+    @if (isEquipmentOwner()) {
+      <a routerLink="/admin/equipment" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-campground"></i>
+        <span>My Equipment</span>
+      </a>
+    }
+  </nav>
+
+  <a href="javascript:void(0)" class="logout-btn" (click)="logout()">
+    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    <span>Logout</span>
+  </a>
+</aside>

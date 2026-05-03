@@ -1,0 +1,66 @@
+<div class="header-registry animate-fade-in">
+  <div>
+    <h1 style="font-size: 2.25rem; color: white; margin-bottom: 0.5rem;">Booking Registry</h1>
+    <p style="color: var(--text-muted); font-size: 1rem;">Monitoring the active territorial occupation and future expeditions.</p>
+  </div>
+</div>
+
+<div class="registry-wrapper animate-slide-up">
+  <div *ngIf="loading()" style="padding: 6rem; text-align: center;">
+    <i class="fa-solid fa-compass fa-spin" style="font-size: 3rem; color: var(--primary); margin-bottom: 1.5rem; display: block;"></i>
+    <p style="color: var(--text-muted); font-weight: 500;">Retrieving booking records...</p>
+  </div>
+
+  <table *ngIf="!loading()">
+    <thead>
+      <tr>
+        <th>Booking Ref</th>
+        <th>Explorer</th>
+        <th>Territory</th>
+        <th>Duration</th>
+        <th>Status</th>
+        <th>Verification</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let res of reservations()">
+        <td><span class="id-tag">#{{ res.id }}</span></td>
+        <td>
+          <div class="user-cell">
+            <span class="user-name">{{ res.userFullName }}</span>
+            <span class="user-sub">Explorer Grade</span>
+          </div>
+        </td>
+        <td>
+          <div class="user-cell">
+            <span style="font-weight: 600; color: white;">{{ res.campsiteName }}</span>
+            <span class="user-sub">{{ res.location || 'Northern Sector' }}</span>
+          </div>
+        </td>
+        <td>
+          <div class="user-cell">
+            <span style="font-size: 0.875rem;">{{ formatDate(res.startDate) }}</span>
+            <span class="user-sub">to {{ formatDate(res.endDate) }}</span>
+          </div>
+        </td>
+        <td>
+          <span class="status-badge" [ngClass]="'status-' + (res.status?.toLowerCase() || 'pending')">
+            {{ res.status || 'PENDING' }}
+          </span>
+        </td>
+        <td>
+          <div class="action-panel">
+            <button class="btn-reg" (click)="updateStatus(res.id, 'CONFIRMED')" [disabled]="res.status === 'CONFIRMED'">Confirm</button>
+            <button class="btn-reg btn-canx" (click)="updateStatus(res.id, 'CANCELLED')" [disabled]="res.status === 'CANCELLED'">Cancel</button>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="reservations().length === 0 && !loading()">
+        <td colspan="6" style="text-align: center; padding: 6rem; opacity: 0.5;">
+          <i class="fa-solid fa-folder-open" style="font-size: 4rem; margin-bottom: 1.5rem; display: block;"></i>
+          <p style="font-size: 1.125rem;">The registry is currently clear of any active bookings.</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

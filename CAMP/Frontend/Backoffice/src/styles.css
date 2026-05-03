@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Dynamic Color Palette (HSL based for better harmony) */
+  --p-h: 245; /* Primary Hue */
+  --p-s: 82%; /* Primary Saturation */
+  
+  --primary: hsl(var(--p-h), var(--p-s), 64%);
+  --primary-glow: hsla(var(--p-h), var(--p-s), 64%, 0.15);
+  --primary-hover: hsl(var(--p-h), var(--p-s), 58%);
+  
+  --bg-base: #020617;
+  --bg-surface: #0f172a;
+  --bg-card: rgba(30, 41, 59, 0.4);
+  
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #f43f5e;
+  
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shine: rgba(255, 255, 255, 0.03);
+  
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-full: 9999px;
+  
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-glow: 0 0 20px -5px var(--primary-glow);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .brand-text {
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-hover:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 10px;
+  border: 2px solid var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Animations */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 15px -5px var(--primary-glow); }
+  50% { box-shadow: 0 0 25px -2px var(--primary-glow); }
+}
+
+.pulse-glow {
+  animation: pulse-glow 3s infinite;
+}
+
+/* Layout */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  background: radial-gradient(circle at top right, hsla(var(--p-h), var(--p-s), 20%, 0.15), transparent 40%),
+              radial-gradient(circle at bottom left, hsla(280, 80%, 20%, 0.1), transparent 40%);
+}
+
+.main-content {
+  flex: 1;
+  padding: 2.5rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; transition: all 0.2s; }

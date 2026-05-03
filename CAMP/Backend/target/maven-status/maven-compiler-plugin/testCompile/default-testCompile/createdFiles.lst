@@ -1,0 +1,13 @@
+com\camp\backend\service\UserServiceTest.class
+com\camp\backend\service\FeedbackServiceTest.class
+com\camp\backend\service\EquipmentServiceTest.class
+com\camp\backend\service\ActivityServiceTest.class
+com\camp\backend\service\EventParticipationServiceTest.class
+com\camp\backend\service\ForumServiceTest.class
+com\camp\backend\service\DeliveryServiceTest.class
+com\camp\backend\service\ReservationServiceTest.class
+com\camp\backend\service\CampsiteServiceTest.class
+com\camp\backend\service\NotificationServiceTest.class
+com\camp\backend\service\ChatServiceTest.class
+com\camp\backend\service\EquipmentOrderServiceTest.class
+com\camp\backend\service\EventServiceTest.class

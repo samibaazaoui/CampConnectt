@@ -1,0 +1,87 @@
+<div class="header-section">
+  <div>
+    <h1 style="color: white; font-weight: 800; font-size: 1.8rem; margin: 0 0 0.25rem 0;">User Directory</h1>
+    <p style="color: var(--text-dim); margin: 0;">Manage platform access and assign administrative roles.</p>
+  </div>
+</div>
+
+<div *ngIf="loading()" style="padding: 3rem; text-align: center;">
+  <i class="fa-solid fa-circle-notch fa-spin fa-2x" style="color: var(--primary); margin-bottom: 1rem;"></i>
+  <p style="color: var(--text-muted); font-weight: 500;">Retrieving user credentials...</p>
+</div>
+
+<!-- Users Edit Modal -->
+<div class="modal-overlay" *ngIf="showModal()" (click)="closeModal()">
+  <div class="modal-container animate-slide-up" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">Modify Credentials</h2>
+      <button (click)="closeModal()" style="color: var(--text-dim); transition: 0.2s;"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" formControlName="fullName" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" formControlName="email" class="form-input">
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Role Designation</label>
+            <select formControlName="role" class="form-select">
+              <option value="USER">Standard User</option>
+              <option value="ADMIN">Administrator</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">New Password</label>
+            <input type="password" formControlName="password" class="form-input" placeholder="(Leave blank to keep)">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" (click)="closeModal()">Cancel</button>
+        <button type="submit" class="btn-submit" [disabled]="userForm.invalid">
+          <span>Apply Changes</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="user-directory" *ngIf="!loading()">
+  <div *ngFor="let user of users()" class="user-row animate-slide-up">
+    <div class="user-identity">
+      <div class="avatar-circle">
+        {{ getInitials(user.fullName) }}
+      </div>
+      <div class="user-meta">
+        <h4>{{ user.fullName }}</h4>
+        <span>{{ user.email }}</span>
+      </div>
+    </div>
+
+    <div>
+      <span class="role-capsule" [class.role-admin]="user.role === 'ADMIN'">
+        {{ user.role }}
+      </span>
+    </div>
+
+    <div style="font-size: 0.8125rem; color: var(--text-dim);">
+      Joined {{ user.createdAt | date:'mediumDate' }}
+    </div>
+
+    <div class="row-actions">
+      <!-- Edit trigger -->
+      <button class="action-circle" (click)="openEditModal(user)"><i class="fa-solid fa-pen"></i></button>
+      <!-- Delete trigger -->
+      <button class="action-circle btn-del" (click)="deleteUser(user.id)"><i class="fa-solid fa-trash-can"></i></button>
+    </div>
+  </div>
+</div>
