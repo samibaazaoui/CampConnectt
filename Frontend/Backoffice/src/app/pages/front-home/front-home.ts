@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,6 +6,10 @@ import { CampsiteService } from '../../services/campsite';
 import { ReservationService } from '../../services/reservation';
 import { FeedbackService } from '../../services/feedback';
 import { AuthService } from '../../services/auth';
+import { MatDialog } from '@angular/material/dialog';
+import { CallService } from '../../services/call';
+import { Subscription } from 'rxjs';
+import { CallDialogComponent } from '../../call-dialog/call-dialog';
 
 @Component({
   selector: 'app-front-home',
@@ -203,12 +207,17 @@ import { AuthService } from '../../services/auth';
     .review-text { margin: 0; font-size: 0.875rem; color: #475569; line-height: 1.5; }
   `]
 })
-export class FrontHomePage implements OnInit {
+export class FrontHomePage implements OnInit,OnDestroy {
   private campsiteService = inject(CampsiteService);
   private reservationService = inject(ReservationService);
   private feedbackService = inject(FeedbackService);
   authService = inject(AuthService);
   private router = inject(Router);
+  private dialog = inject(MatDialog);   
+  private callService = inject(CallService);  
+  private callSub?: Subscription;                      // ← NEW
+
+
   
   campsites = signal<any[]>([]);
   activeCamp = signal<any | null>(null);
@@ -220,17 +229,85 @@ export class FrontHomePage implements OnInit {
   campFeedbacks = signal<any[]>([]);
   selectedRating = signal<number>(0);
   feedbackComment = '';
+  private currentUser: any;
+  private signalSub?: Subscription;
 
   reservationForm = new FormGroup({
     startDate: new FormControl('', Validators.required),
     endDate: new FormControl('', Validators.required)
   });
 
-  ngOnInit() {
-    this.campsiteService.findAll().subscribe((res: any) => {
-      this.campsites.set(res?.data?.content || res?.data || []);
+ngOnInit() {
+
+  // 🏕️ load camps
+  this.campsiteService.findAll().subscribe((res: any) => {
+    this.campsites.set(res?.data?.content || res?.data || []);
+  });
+
+  try {
+    const userStr = localStorage.getItem('camp_user');
+    if (!userStr) return;
+
+    this.currentUser = JSON.parse(userStr);
+
+    // 🔌 connect مرة واحدة فقط
+    this.callService.connect(this.currentUser.id);
+
+    // =========================
+    // 📞 INCOMING CALL
+    // =========================
+    this.callSub = this.callService.incomingCall$.subscribe((req) => {
+
+      if (req.type === 'CALL') {
+
+        const dialogRef = this.dialog.open(CallDialogComponent, {
+          data: {
+            callerId: req.callerId,
+            callerName: req.callerName,
+            currentUserId: this.currentUser.id
+          },
+          panelClass: 'call-dialog-panel',
+          disableClose: true,
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+
+          if (result === 'accepted') {
+            console.log('✅ accepted');
+
+            // 🎧 START AUDIO
+            this.callService.startCall(
+              req.callerId,
+              this.currentUser.id
+            );
+          }
+
+          if (result === 'rejected') {
+            console.log('❌ rejected');
+          }
+        });
+      }
     });
+
+    // =========================
+    // 📡 SIGNAL (WebRTC)
+    // =========================
+    this.signalSub = this.callService.signal$.subscribe(signal => {
+      this.callService.handleSignal(
+        signal,
+        this.currentUser.id
+      );
+    });
+
+  } catch (e) {
+    console.error('Call service error:', e);
   }
+}
+ngOnDestroy(): void {
+  this.callSub?.unsubscribe();
+  this.signalSub?.unsubscribe();
+ // this.callService.disconnect();
+}
 
   openBookingModal(camp: any) {
     if (!this.authService.isLoggedIn()) {

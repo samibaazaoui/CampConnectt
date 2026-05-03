@@ -277,6 +277,8 @@ export class EquipmentComponent implements OnInit {
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
+  aiPrice = signal<number | null>(null);
+  aiLoading = signal<boolean>(false);
   
   equipment = signal<any[]>([]);
   loading = signal<boolean>(false);
@@ -351,44 +353,82 @@ export class EquipmentComponent implements OnInit {
     this.showModal.set(false);
   }
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.uploadingImage.set(true);
-      const formData = new FormData();
-      formData.append('file', file);
+onFileSelected(event: any) {
+  const file: File = event.target.files[0];
+  if (file) {
+    this.uploadingImage.set(true);
 
-      this.http.post<any>('http://localhost:8080/api/upload/image', formData).subscribe({
+    const formData = new FormData();
+    formData.append('file', file);
+
+    this.http.post<any>('http://localhost:8084/api/upload/image', formData)
+      .subscribe({
         next: (response) => {
-          this.equipmentForm.patchValue({ imageUrl: response.data });
-          this.uploadingImage.set(false);
-        },
-        error: (err) => {
-          console.error('Upload failed', err);
-          this.uploadingImage.set(false);
-        }
-      });
-    }
-  }
+          const imageUrl = response.data;
+          this.equipmentForm.patchValue({ imageUrl });
 
-  onSubmit() {
-    if (this.equipmentForm.valid) {
-      const payload = this.equipmentForm.value;
-      const id = this.editingId();
-      
-      const request = id
-        ? this.equipmentService.update(id, payload)
-        : this.equipmentService.create(payload);
+          this.uploadingImage.set(false);
 
-      request.subscribe({
-        next: () => {
-          this.loadEquipment();
-          this.closeModal();
+          this.callAIPrice(file);
+
         },
-        error: (err) => console.error('Error saving equipment:', err)
+        error: () => this.uploadingImage.set(false)
       });
-    }
   }
+}
+callAIPrice(file: File) {
+  this.aiLoading.set(true);
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('competitorPrice', '40');
+  formData.append('demand', '70');
+  formData.append('season', 'winter');
+
+  this.http.post<any>('http://localhost:8084/api/ai/predict', formData)
+    .subscribe({
+      next: (res) => {
+        this.aiPrice.set(res.recommended_price);
+        this.aiLoading.set(false);
+      },
+      error: () => {
+        this.aiLoading.set(false);
+        console.error('AI error');
+      }
+    });
+}
+
+onSubmit() {
+  if (this.equipmentForm.valid) {
+
+    const userPrice = this.equipmentForm.value.unitPrice;
+    const aiPrice = this.aiPrice();
+
+    if (aiPrice) {
+      const min = aiPrice * 0.75;
+      const max = aiPrice * 1.25;
+
+      if (userPrice < min || userPrice > max) {
+        alert(` Prix invalide.\nAI recommande: ${aiPrice}$\nRange: ${min.toFixed(2)} - ${max.toFixed(2)}`);
+        return;
+      }
+    }
+
+    const payload = this.equipmentForm.value;
+    const id = this.editingId();
+
+    const request = id
+      ? this.equipmentService.update(id, payload)
+      : this.equipmentService.create(payload);
+
+    request.subscribe({
+      next: () => {
+        this.loadEquipment();
+        this.closeModal();
+      }
+    });
+  }
+}
 
   deleteEquipment(id: number) {
     if (confirm('Delete this item from inventory?')) {

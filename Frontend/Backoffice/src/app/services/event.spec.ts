@@ -30,7 +30,7 @@ describe('EventService', () => {
 
   it('should fetch events with pagination', () => {
     service.findAll(2, 20).subscribe();
-    const req = httpMock.expectOne('http://localhost:8080/api/events?page=2&size=20');
+    const req = httpMock.expectOne('http://localhost:8084/api/events?page=2&size=20');
     expect(req.request.method).toBe('GET');
     req.flush({ success: true });
   });

@@ -375,7 +375,7 @@ export class EventsComponent implements OnInit {
   viewAttendees(ev: any) {
     this.activeEventTitle.set(ev.title);
     this.participants.set([]);
-    this.http.get(`http://localhost:8080/api/event-participations/event/${ev.id}`).subscribe({
+    this.http.get(`http://localhost:8084/api/event-participations/event/${ev.id}`).subscribe({
       next: (res: any) => {
         this.participants.set(res?.data || []);
         this.showParticipants.set(true);

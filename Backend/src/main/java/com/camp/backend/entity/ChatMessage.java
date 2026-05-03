@@ -1,8 +1,6 @@
 package com.camp.backend.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,15 +28,6 @@ public class ChatMessage {
 
     private String content;
 
-    private boolean isIncognito = false;
-
-    private String pseudonym;
-
-    @Enumerated(EnumType.STRING)
-    private ChatMessageType messageType = ChatMessageType.TEXT;
-
-    private String audioUrl;
-
     private LocalDateTime sentAt = LocalDateTime.now();
 
     public ChatMessage() {}
@@ -51,14 +40,6 @@ public class ChatMessage {
     public void setSender(User sender) { this.sender = sender; }
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
-    public boolean isIncognito() { return isIncognito; }
-    public void setIncognito(boolean incognito) { isIncognito = incognito; }
-    public String getPseudonym() { return pseudonym; }
-    public void setPseudonym(String pseudonym) { this.pseudonym = pseudonym; }
     public LocalDateTime getSentAt() { return sentAt; }
     public void setSentAt(LocalDateTime sentAt) { this.sentAt = sentAt; }
-    public ChatMessageType getMessageType() { return messageType; }
-    public void setMessageType(ChatMessageType messageType) { this.messageType = messageType; }
-    public String getAudioUrl() { return audioUrl; }
-    public void setAudioUrl(String audioUrl) { this.audioUrl = audioUrl; }
 }

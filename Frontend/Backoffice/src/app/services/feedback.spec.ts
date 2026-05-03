@@ -30,7 +30,7 @@ describe('FeedbackService', () => {
 
   it('should get feedback for a specific campsite', () => {
     service.findByCampsite(55).subscribe();
-    const req = httpMock.expectOne('http://localhost:8080/api/feedbacks/campsite/55');
+    const req = httpMock.expectOne('http://localhost:8084/api/feedbacks/campsite/55');
     expect(req.request.method).toBe('GET');
     req.flush([]);
   });

@@ -16,7 +16,7 @@ import java.util.UUID;
 public class FileUploadController {
 
     // Storing images directly into the specified resources directory
-    private final String UPLOAD_DIR = "C:\\Users\\Bechir\\Desktop\\CAMP\\Backend\\src\\main\\resources\\Images\\";
+    private final String UPLOAD_DIR = "D:\\uploads\\";
 
     @PostMapping("/image")
     public ResponseEntity<ApiResponse<String>> uploadImage(@RequestParam("file") MultipartFile file) {
@@ -37,15 +37,15 @@ public class FileUploadController {
                 extension = originalFilename.substring(originalFilename.lastIndexOf("."));
             }
             String newFilename = UUID.randomUUID().toString() + extension;
-            
+
             Path path = Paths.get(UPLOAD_DIR + newFilename);
             Files.write(path, file.getBytes());
 
             // The URL the frontend will use to access the image
             String imageUrl = "http://localhost:8080/images/" + newFilename;
-            
+
             return ResponseEntity.ok(ApiResponse.ok("Image uploaded successfully", imageUrl));
-            
+
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body(ApiResponse.fail("Failed to upload image: " + e.getMessage(), null));

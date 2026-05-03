@@ -8,8 +8,6 @@ public record ChatMessageResponse(
     Long senderId,
     String senderName,
     String content,
-    boolean isIncognito,
-    LocalDateTime sentAt,
-    String messageType,
-    String audioUrl
-) {}
+    LocalDateTime sentAt
+) {
+}

@@ -1,5 +1,6 @@
 package com.camp.backend.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateChatMessageRequest(
@@ -9,12 +10,7 @@ public record CreateChatMessageRequest(
     @NotNull(message = "Sender ID is required")
     Long senderId,
     
-    String content,
-
-    boolean isIncognito,
-
-    String messageType,
-
-    String audioUrl
+    @NotBlank(message = "Content is required")
+    String content
 ) {
 }

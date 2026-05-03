@@ -31,14 +31,14 @@ describe('ActivityService', () => {
   it('should fetch activities with pagination', () => {
     const mockData = { data: [], success: true };
     service.findAll(0, 5).subscribe();
-    const req = httpMock.expectOne('http://localhost:8080/api/activities?page=0&size=5');
+    const req = httpMock.expectOne('http://localhost:8084/api/activities?page=0&size=5');
     expect(req.request.method).toBe('GET');
     req.flush(mockData);
   });
 
   it('should delete activity', () => {
     service.delete(1).subscribe();
-    const req = httpMock.expectOne('http://localhost:8080/api/activities/1');
+    const req = httpMock.expectOne('http://localhost:8084/api/activities/1');
     expect(req.request.method).toBe('DELETE');
     req.flush({ success: true });
   });

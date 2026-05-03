@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class EquipmentService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/equipments';
+  private apiUrl = 'http://localhost:8084/api/equipments';
 
   findAll(page: number = 0, size: number = 10): Observable<any> {
     return this.http.get(`${this.apiUrl}?page=${page}&size=${size}`);

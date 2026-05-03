@@ -29,11 +29,6 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.ok("Users fetched", userService.findAll()));
     }
 
-    @GetMapping("/top-contributors")
-    public ResponseEntity<ApiResponse<List<UserResponse>>> getTopContributors(@RequestParam(defaultValue = "10") int limit) {
-        return ResponseEntity.ok(ApiResponse.ok("Top contributors fetched", userService.getTopContributors(limit)));
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<UserResponse>> findById(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.ok("User fetched", userService.findById(id)));

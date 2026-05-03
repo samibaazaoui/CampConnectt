@@ -30,7 +30,7 @@ describe('DeliveryService', () => {
 
   it('should update delivery status via query param', () => {
     service.updateStatus(100, 'DELIVERED').subscribe();
-    const req = httpMock.expectOne('http://localhost:8080/api/deliveries/100/status?status=DELIVERED');
+    const req = httpMock.expectOne('http://localhost:8084/api/deliveries/100/status?status=DELIVERED');
     expect(req.request.method).toBe('PUT');
     req.flush({});
   });

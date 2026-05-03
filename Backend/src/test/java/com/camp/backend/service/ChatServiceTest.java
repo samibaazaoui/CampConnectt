@@ -93,10 +93,9 @@ public class ChatServiceTest {
         message.setRoom(room);
         message.setSender(user);
         message.setContent("Hello");
-        message.setIncognito(false);
         when(messageRepository.save(any(ChatMessage.class))).thenReturn(message);
 
-        ChatMessageResponse response = chatService.sendMessage(new CreateChatMessageRequest(1L, 1L, "Hello", false, "TEXT", null));
+        ChatMessageResponse response = chatService.sendMessage(new CreateChatMessageRequest(1L, 1L, "Hello"));
 
         assertNotNull(response);
         assertEquals("Hello", response.content());

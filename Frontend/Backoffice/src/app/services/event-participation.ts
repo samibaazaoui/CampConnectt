@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class EventParticipationService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/event-participations';
+  private apiUrl = 'http://localhost:8084/api/event-participations';
 
   findAll(): Observable<any> {
     return this.http.get(this.apiUrl);
@@ -38,6 +38,6 @@ export class EventParticipationService {
   }
 
   isJoined(eventId: number, userId: number): Observable<any> {
-    return this.http.get(`http://localhost:8080/api/events/${eventId}/is-joined/${userId}`);
+    return this.http.get(`http://localhost:8084/api/events/${eventId}/is-joined/${userId}`);
   }
 }

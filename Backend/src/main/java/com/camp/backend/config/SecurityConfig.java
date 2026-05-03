@@ -43,8 +43,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // Public endpoints
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/ws/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-                .requestMatchers("/ws/**").permitAll() // WebSocket STOMP endpoint
                 .requestMatchers(HttpMethod.GET, "/api/campsites").permitAll() // Approved public list
                 .requestMatchers(HttpMethod.GET, "/api/campsites/approved").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/campsites/{id:[0-9]+}").permitAll()

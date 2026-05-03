@@ -46,14 +46,6 @@ public class UserService {
         return userRepository.findAll().stream().map(this::toResponse).toList();
     }
 
-    public List<UserResponse> getTopContributors(int limit) {
-        return userRepository.findAll().stream()
-            .sorted((u1, u2) -> u2.getKarma().compareTo(u1.getKarma()))
-            .limit(limit)
-            .map(this::toResponse)
-            .toList();
-    }
-
     public UserResponse findById(Long id) {
         return toResponse(getById(id));
     }
@@ -88,8 +80,11 @@ public class UserService {
             user.getEmail(),
             user.getFullName(),
             user.getRole(),
-            user.getCreatedAt(),
-            user.getKarma()
+            user.getCreatedAt()
         );
+    }
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

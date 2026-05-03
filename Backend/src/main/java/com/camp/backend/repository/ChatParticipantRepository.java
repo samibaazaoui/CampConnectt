@@ -6,5 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChatParticipantRepository extends JpaRepository<ChatParticipant, Long> {
     List<ChatParticipant> findByRoomId(Long roomId);
-    long countByUserId(Long userId);
 }

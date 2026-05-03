@@ -118,6 +118,5 @@ export class SidebarComponent {
 
   logout() {
     this.authService.logout();
-    window.location.reload();
   }
 }

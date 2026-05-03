@@ -12,10 +12,35 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  mail:
+
+    host: smtp.gmail.com
+
+    port: 587
+
+    username: ${MAIL_USERNAME:hazemamor05@gmail.com}
+
+    password: ${MAIL_PASSWORD:wbjl qsrg lkum uapp}
+
+    properties:
+
+      mail:
+
+        smtp:
+
+          auth: true
+
+          starttls:
+
+            enable: true
+
+          ssl:
+
+            trust: smtp.gmail.com
 
 
 server:
-  port: 8080
+  port: 8084
 
 jwt:
   secret: Y2FtcC1iYWNrZW5kLXNlY3JldC1rZXktZm9yLWp3dC10b2tlbi1nZW5lcmF0aW9uLTIwMjQ=
@@ -23,30 +48,3 @@ jwt:
 
 cors:
   allowed-origins: http://localhost:4200,http://localhost:3000
-
-# ML Spam Detection Configuration
-spam-detection:
-  enabled: true
-  url: http://localhost:8001/predict
-  confidence-threshold: 0.8
-
-# src/main/resources/application.yml
-
-# ... (garde TOUTES tes configurations existantes ci-dessus) ...
-
-# ==================== CHAT COOLDOWN (à ajouter à la fin) ====================
-chat:
-  cooldown:
-    seconds: 30
-
-# src/main/resources/application.yml
-
-# ... (garde TOUTES tes configurations existantes) ...
-
-# ==================== LOGGING CONFIGURATION ====================
-llogging:
-  level:
-    root: INFO
-    com.camp.backend: DEBUG
-  pattern:
-    console: "%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

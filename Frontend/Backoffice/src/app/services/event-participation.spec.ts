@@ -30,14 +30,14 @@ describe('EventParticipationService', () => {
 
   it('should get participation by userId', () => {
     service.getByUserId(1).subscribe();
-    const req = httpMock.expectOne('http://localhost:8080/api/event-participations/user/1');
+    const req = httpMock.expectOne('http://localhost:8084/api/event-participations/user/1');
     expect(req.request.method).toBe('GET');
     req.flush([]);
   });
 
   it('should update participation status', () => {
     service.updateStatus(10, 'ATTENDED').subscribe();
-    const req = httpMock.expectOne('http://localhost:8080/api/event-participations/10/status?status=ATTENDED');
+    const req = httpMock.expectOne('http://localhost:8084/api/event-participations/10/status?status=ATTENDED');
     expect(req.request.method).toBe('PUT');
     req.flush({});
   });

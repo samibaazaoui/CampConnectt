@@ -1,5 +1,6 @@
 package com.camp.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,16 +27,13 @@ public class User {
 
     @Column(nullable = false)
     private String fullName;
-
+    @JsonIgnore
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role = UserRole.USER;
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
-
-    @Column(nullable = false)
-    private Integer karma = 0;
 
     public User() {}
 
@@ -51,6 +49,4 @@ public class User {
     public void setRole(UserRole role) { this.role = role; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-    public Integer getKarma() { return karma; }
-    public void setKarma(Integer karma) { this.karma = karma; }
 }

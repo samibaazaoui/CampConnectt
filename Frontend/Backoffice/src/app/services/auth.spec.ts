@@ -42,7 +42,7 @@ describe('AuthService', () => {
 
     service.login({ email: 'test@test.com', password: 'password' }).subscribe();
 
-    const req = httpMock.expectOne('http://localhost:8080/api/auth/login');
+    const req = httpMock.expectOne('http://localhost:8084/api/auth/login');
     expect(req.request.method).toBe('POST');
     req.flush(mockResponse);
 

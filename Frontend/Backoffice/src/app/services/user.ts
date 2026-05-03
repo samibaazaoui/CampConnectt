@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/users';
+  private apiUrl = 'http://localhost:8084/api/users';
 
   findAll(): Observable<any> {
     return this.http.get(this.apiUrl);

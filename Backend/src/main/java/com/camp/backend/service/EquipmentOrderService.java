@@ -2,27 +2,24 @@ package com.camp.backend.service;
 
 import com.camp.backend.config.BadRequestException;
 import com.camp.backend.config.ResourceNotFoundException;
-import com.camp.backend.dto.CreateEquipmentOrderItemRequest;
-import com.camp.backend.dto.CreateEquipmentOrderRequest;
-import com.camp.backend.dto.EquipmentOrderItemResponse;
-import com.camp.backend.dto.EquipmentOrderResponse;
-import com.camp.backend.entity.Equipment;
-import com.camp.backend.entity.EquipmentOrder;
-import com.camp.backend.entity.EquipmentOrderItem;
-import com.camp.backend.entity.NotificationType;
-import com.camp.backend.entity.User;
+import com.camp.backend.dto.*;
+import com.camp.backend.entity.*;
 import com.camp.backend.repository.EquipmentOrderItemRepository;
 import com.camp.backend.repository.EquipmentOrderRepository;
 import com.camp.backend.repository.EquipmentRepository;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EquipmentOrderService {
 
-    private final EquipmentOrderRepository equipmentOrderRepository;
+    private final   EquipmentOrderRepository equipmentOrderRepository;
     private final EquipmentOrderItemRepository equipmentOrderItemRepository;
     private final EquipmentService equipmentService;
     private final EquipmentRepository equipmentRepository;
@@ -143,4 +140,31 @@ public class EquipmentOrderService {
             itemResponses
         );
     }
+    public List<EquipmentOrder> getOrdersByUser(String name) {
+        return equipmentOrderRepository.findOrdersByUserName(name);
+    }
+    public List<EquipmentOrder> getOrdersByRoleAndStatus(
+            UserRole role,
+            EquipmentOrderStatus status) {
+
+        return equipmentOrderRepository.findByUser_RoleAndStatus(role, status);
+    }
+    public List<EquipmentStatsProjection> getApprovedEquipmentStats() {
+        return equipmentOrderItemRepository.getApprovedEquipmentStats();
+    }
+    public List<UserResponse> getUsersWhoOrderedMyEquipment(Long ownerId) {
+        List<User> users = equipmentOrderRepository.findUsersWhoOrderedMyEquipment(ownerId);
+
+        return users.stream()
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getEmail(),
+                        user.getFullName(),
+                        user.getRole(),
+                        user.getCreatedAt()
+                ))
+                .toList();
+    }
+
+
 }

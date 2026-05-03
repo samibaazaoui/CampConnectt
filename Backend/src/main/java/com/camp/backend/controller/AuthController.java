@@ -47,8 +47,7 @@ public class AuthController {
             user.getEmail(),
             user.getFullName(),
             user.getRole(),
-            user.getCreatedAt(),
-            user.getKarma()
+            user.getCreatedAt()
         );
         String token = jwtUtil.generateToken(
             user.getId(),

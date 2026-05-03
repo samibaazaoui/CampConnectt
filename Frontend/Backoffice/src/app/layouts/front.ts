@@ -77,7 +77,7 @@ import { CommonModule } from '@angular/common';
       </main>
 
       <footer class="front-footer">
-        <p>© 2026 CAMP Wilderness Platform.<p>
+        <p>&copy; 2026 CAMP Wilderness Platform. Prepared by Antigravity.</p>
       </footer>
     </div>
   `,

@@ -36,7 +36,7 @@ describe('CampsiteService', () => {
       expect(res.data[0].name).toBe('Camp A');
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/campsites?page=1&size=10');
+    const req = httpMock.expectOne('http://localhost:8084/api/campsites?page=1&size=10');
     expect(req.request.method).toBe('GET');
     req.flush(mockData);
   });
@@ -48,7 +48,7 @@ describe('CampsiteService', () => {
       expect(res.data.id).toBe(5);
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/campsites/5');
+    const req = httpMock.expectOne('http://localhost:8084/api/campsites/5');
     req.flush(mockData);
   });
 
@@ -57,7 +57,7 @@ describe('CampsiteService', () => {
 
     service.create(newCamp).subscribe();
 
-    const req = httpMock.expectOne('http://localhost:8080/api/campsites');
+    const req = httpMock.expectOne('http://localhost:8084/api/campsites');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(newCamp);
     req.flush({ success: true });
@@ -66,7 +66,7 @@ describe('CampsiteService', () => {
   it('should call delete endpoint with correct id', () => {
     service.delete(123).subscribe();
 
-    const req = httpMock.expectOne('http://localhost:8080/api/campsites/123');
+    const req = httpMock.expectOne('http://localhost:8084/api/campsites/123');
     expect(req.request.method).toBe('DELETE');
     req.flush({ success: true });
   });

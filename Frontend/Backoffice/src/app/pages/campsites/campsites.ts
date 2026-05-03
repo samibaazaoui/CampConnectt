@@ -391,7 +391,7 @@ export class CampsitesComponent implements OnInit {
       const formData = new FormData();
       formData.append('file', file);
 
-      this.http.post<any>('http://localhost:8080/api/upload/image', formData).subscribe({
+      this.http.post<any>('http://localhost:8084/api/upload/image', formData).subscribe({
         next: (response) => {
           this.campsiteForm.patchValue({ imageUrl: response.data });
           this.uploadingImage.set(false);

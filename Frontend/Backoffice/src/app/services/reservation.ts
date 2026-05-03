@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ReservationService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/reservations';
+  private apiUrl = 'http://localhost:8084/api/reservations';
 
   findAll(page: number = 0, size: number = 10): Observable<any> {
     return this.http.get(`${this.apiUrl}?page=${page}&size=${size}`);

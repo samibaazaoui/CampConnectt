@@ -30,14 +30,14 @@ describe('NotificationService', () => {
 
   it('should mark notification as read', () => {
     service.markAsRead(777).subscribe();
-    const req = httpMock.expectOne('http://localhost:8080/api/notifications/777/read');
+    const req = httpMock.expectOne('http://localhost:8084/api/notifications/777/read');
     expect(req.request.method).toBe('PUT');
     req.flush({});
   });
 
   it('should get notifications for a user', () => {
     service.findByUserId(1).subscribe();
-    const req = httpMock.expectOne('http://localhost:8080/api/notifications/user/1');
+    const req = httpMock.expectOne('http://localhost:8084/api/notifications/user/1');
     expect(req.request.method).toBe('GET');
     req.flush([]);
   });

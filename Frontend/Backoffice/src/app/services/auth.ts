@@ -1,13 +1,16 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { Route, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = 'http://localhost:8084/api/auth';
+  constructor(private router:Router){
+  }
 
   login(credentials: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
@@ -32,8 +35,8 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('camp_token');
-    localStorage.removeItem('camp_user');
+  localStorage.clear();
+  this.router.navigate(['/login']);
   }
 
   isLoggedIn(): boolean {

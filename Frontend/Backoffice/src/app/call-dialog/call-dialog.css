@@ -1,0 +1,15 @@
+/* ─── Add to your global styles.css ─────────────────────────────────────── */
+
+/* Remove MatDialog default white background so our dark dialog shines */
+.call-dialog-panel .mat-mdc-dialog-container {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 1.5rem !important;
+  overflow: visible !important;
+}
+
+.call-dialog-panel .mdc-dialog__surface {
+  background: transparent !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6) !important;
+  border-radius: 1.5rem !important;
+}

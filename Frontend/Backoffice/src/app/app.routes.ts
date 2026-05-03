@@ -19,6 +19,7 @@ import { UsersComponent } from './pages/users/users';
 import { EventsComponent } from './pages/events/events';
 import { ActivitiesComponent } from './pages/activities/activities';
 import { OrdersComponent } from './pages/orders/orders';
+import { CustomersComponenet } from './customers/customers';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -44,6 +45,7 @@ export const routes: Routes = [
       { path: 'reservations', component: ReservationsComponent },
       { path: 'equipment', component: EquipmentComponent },
       { path: 'users', component: UsersComponent },
+      {path: 'customers',component:CustomersComponenet},
       { path: 'events', component: EventsComponent },
       { path: 'activities', component: ActivitiesComponent },
       { path: 'orders', component: OrdersComponent },

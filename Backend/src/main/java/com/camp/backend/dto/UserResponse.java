@@ -8,7 +8,6 @@ public record UserResponse(
     String email,
     String fullName,
     UserRole role,
-    LocalDateTime createdAt,
-    Integer karma
+    LocalDateTime createdAt
 ) {
 }

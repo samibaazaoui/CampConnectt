@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CampsiteService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/campsites';
+  private apiUrl = 'http://localhost:8084/api/campsites';
 
   findAll(page: number = 0, size: number = 10): Observable<any> {
     return this.http.get(`${this.apiUrl}?page=${page}&size=${size}`);

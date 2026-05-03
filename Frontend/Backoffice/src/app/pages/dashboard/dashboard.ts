@@ -7,6 +7,7 @@ import { UserService } from '../../services/user';
 import { ActivityService } from '../../services/activity';
 import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
+import { OrderService } from '../../services/order';
 
 @Component({
   selector: 'app-dashboard',
@@ -147,6 +148,7 @@ export class DashboardComponent implements OnInit {
   private activityService = inject(ActivityService);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private orderService = inject(OrderService);
 
   isAdmin = signal(this.authService.isAdmin());
   isCampsiteOwner = signal(this.authService.isCampsiteOwner());
@@ -159,7 +161,10 @@ export class DashboardComponent implements OnInit {
     { label: 'Active Campsites', value: '...', icon: 'fa-location-dot', color: 'blue' },
     { label: 'Total Users', value: '...', icon: 'fa-users', color: 'green' },
     { label: 'Total Activities', value: '...', icon: 'fa-person-hiking', color: 'orange' },
-    { label: 'Scheduled Events', value: '...', icon: 'fa-calendar-days', color: 'purple' }
+    { label: 'Scheduled Events', value: '...', icon: 'fa-calendar-days', color: 'purple' },
+    { label: 'Equipment Revenue', value: '...', icon: 'fa-coins', color: 'green' } ,
+    { label: 'Sell Quantity', value: '0', icon: 'fa-cart-shopping', color: 'blue' },
+    { label: 'Customers', value: '0', icon: 'fa-user-check', color: 'purple' }
   ]);
 
   activities = signal<any[]>([
@@ -173,6 +178,29 @@ export class DashboardComponent implements OnInit {
 
   loadRoleSpecificStats() {
     if (this.isAdmin()) {
+      this.orderService.getApprovedEquipmentStats().subscribe((res: any) => {
+      const data = res?.data || [];
+
+  // total revenue
+    const totalRevenue = data.reduce((sum: number, item: any) => {
+    return sum + (item.totalRevenue || 0);
+   }, 0);
+
+  // total quantity
+    const totalQty = data.reduce((sum: number, item: any) => {
+    return sum + (item.totalQuantity || 0);
+    }, 0);
+    const totalUsers = data.reduce((sum: number, item: any) => {
+    return sum + (item.totalUsers || 0);
+  }, 0);
+
+  // update stats
+    this.updateStat(4, totalRevenue.toFixed(2)); 
+    this.updateStat(5, totalQty); 
+      this.updateStat(6,totalUsers); 
+
+
+   });
       // Global Stats for Admin
       this.campsiteService.findAll().subscribe((res: any) => {
         const count = res?.data?.totalElements ?? res?.data?.content?.length ?? res?.data?.length ?? 0;

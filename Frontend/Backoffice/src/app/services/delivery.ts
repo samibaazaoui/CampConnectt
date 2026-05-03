@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class DeliveryService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/deliveries';
+  private apiUrl = 'http://localhost:8084/api/deliveries';
 
   findAll(page: number = 0, size: number = 10): Observable<any> {
     return this.http.get(`${this.apiUrl}?page=${page}&size=${size}`);

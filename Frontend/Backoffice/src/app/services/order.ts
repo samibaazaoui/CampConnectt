@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class OrderService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/equipment-orders';
+  private apiUrl = 'http://localhost:8084/api/equipment-orders';
 
   findAll(page: number = 0, size: number = 10): Observable<any> {
     return this.http.get(`${this.apiUrl}?page=${page}&size=${size}`);
@@ -32,4 +32,10 @@ export class OrderService {
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+  getMyCustomers(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/owner/users`);
+  }
+  getApprovedEquipmentStats(): Observable<any> {
+  return this.http.get(`${this.apiUrl}/stats`);
+}
 }
